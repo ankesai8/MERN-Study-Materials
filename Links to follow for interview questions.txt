@@ -1,0 +1,23 @@
+HTML
+-----
+
+https://www.interviewbit.com/html-interview-questions/
+
+https://www.edureka.co/blog/interview-questions/top-50-html-interview-questions-and-answers/
+
+CSS
+-----
+
+https://www.interviewbit.com/css-interview-questions/
+
+
+
+Javascript
+-------------
+
+https://www.youtube.com/watch?v=pN6jk0uUrD8&list=PLlasXeu85E9cQ32gLCvAvr9vNaUccPVNP
+
+Please follow the above Namaste Javascript playlist for Javascript interview questions.
+
+
+Follow channels like Traversy and Lamadev for full stack projects and other concepts topic wise
