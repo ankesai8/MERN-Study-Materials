@@ -1,0 +1,909 @@
+Introduction
+Hello, this article is meant to teach about JavaScript through examples based on the concept of data structures. If, by any reason, you don't want to read or copy the code, I've supplied the .js file to be downloaded.
+
+Basics
+First and foremost, if you are new to JavaScript, you might prefer to start at What you should know about if you are new to JavaScript. It is not the newest of posts, but I would rather refer to something from within CodeProject which is more likely to stay available.
+
+Data Structures
+According to Wikipedia:
+
+"In computer science, a data structure is a particular way of storing and organizing data in a computer so that it can be used efficiently."
+In this article, I will be using some structures which, personally, look like the most basic ones. I know that, through Arrays you can have a greater performance, but the point of this exercise is to practice the understanding of code.
+
+Types of data structures
+1) Stack 
+A stack image
+
+A stack is a particular data type or collection in which the main operations are the addition of an item, known as push, and removal of it, known as pop. Stacks implement a LIFO (Last In First Out) structure which means that the last element added to the structure must be the first one to be removed. It will have the following initial code: 
+
+JavaScript
+Copy Code
+function Stack(){
+    var top = null;
+    var count = 0;
+
+    //Returns the number of items in the queue
+    this.GetCount = function(){
+        return count;
+    }
+
+    /* Methods */
+} 
+Our stack is going to have four additional methods: Push(data), Pop(), Peek(), and DisplayAll(). These will be defined inside the function Stack() below this.count. Well then, let's start:
+
+Push
+A stack image
+
+Description: Pushes (adds) the specified data into the Stack and makes it the top node. It also increases the stack count by 1.
+
+JavaScript
+Copy Code
+this.Push = function (data) {
+    //Creates a node containing the data and a reference to the next item, if any.
+    var node = {
+        data: data,
+        next: null
+    };
+
+    //links the current node to the top node. If the stack is empty it will have null as reference
+    node.next = top;
+
+    //makes the current node as the top node.
+    top = node;
+
+    //Increases the count
+    count++;
+} 
+Peek
+A stack image
+
+Description: Peeks at the item from the top of the stack. Returns null if the stack is empty.
+
+JavaScript
+Copy Code
+this.Peek = function(){
+	//If there are no items, returns null. (avoid error)
+    if(top === null){
+		return null;
+	}
+	else{
+		return top.data;
+	}
+}
+Pop
+A stack image
+
+Description: It looks quite similar to the PEEK() method, but it also removes the top item and decreases the count by 1.
+
+JavaScript
+Copy Code
+this.Pop = function () {
+    //If there are no items, returns null. (avoid error)
+    if (top === null) {
+        return null;
+    }
+    else {
+        //assigns top to a temp variable
+        var out = top;
+
+        //makes the TOP as the next in line
+        top = top.next;
+
+        //there still are items on the stack
+        if (count > 0) {
+            count--;
+        }
+
+        //returns the value that was removed
+        return out.data;
+    }
+}
+Display All
+Description: Displays all data from the stack as an array. To display it as an array was chosen by me because I was not sure on how I would display it (e.g.,: console.log, document.write, etc..)
+
+JavaScript
+Copy Code
+this.DisplayAll = function(){
+
+    if (top === null) {
+        return null;
+    }
+    else {
+        //instantiate an array
+        var arr = new Array();
+        //creates a node to move through the stack
+        var current = top;
+
+        //moves through the stack until it reaches the bottom item
+        for (var i = 0; i < count; i++) {
+            //assigns the data to the array
+            arr[i] = current.data;
+            //advances one step
+            current = current.next;
+        }
+        //returns the array
+        return arr;
+    }
+}  
+PUSH(DATA):
+PEEK():
+POP():
+DISPLAYALL():
+2) Queue 
+A stack image
+
+Queues are collection that keep objects in a certain order while applying the FIFO (First in First out) format. It is just like a line of people, except that data doesn't cut in it:
+
+JavaScript
+Copy Code
+function Queue(){
+    var count = 0;
+    //Yes, I don't use back and front.
+    var head = null;
+    var tail = null;
+
+    //Returns the number of items in the queue
+    this.GetCount = function(){
+        return count;
+    }
+
+    /* Methods */
+} 
+Our queue is also going to have 4 additional methods: Enqueue(data), Dequeue(), PeekAt(), and DisplayAll().
+
+Enqueue
+A stack image
+
+Description: Adds an item at the front of the queue. The process is the same as PUSH from stack, but I changed for the sake of the exercise.
+
+JavaScript
+Copy Code
+this.Enqueue = function (data) {
+    //Creates a node with the data
+    var node = {
+        data: data,
+        //next points to value straight way. If head is null, it won't be a problem
+        next: head
+    };
+
+    //if it is the first item, then the head is also the tail
+    if (head === null) {
+        tail = node;
+    }
+
+    //defines the node as the new head
+    head = node;
+
+    //increases the count
+    count++;
+}
+Dequeue
+A stack image
+
+Description: Removes and returns the last item inserted and stored which would be the one at the opposite side of the queue.
+
+JavaScript
+Shrink ▲   Copy Code
+this.Dequeue = function () {
+    //if queue is empty, returns null
+    if (count === 0) {
+        return;
+    }
+    else {
+        var current = head;
+        var previous = null;
+
+        //while there is a next, it will advance the queue.
+        //the idea is to have "current" at the end and "previous" as the one before last
+        while (current.next) {
+            previous = current;
+            current = current.next;
+        }
+
+        //if there is more than 1 item, 
+        //Removes the tail and decreases count by 1.
+        if (count > 1) {
+            //Remove the reference to the last one.
+            previous.next = null;
+
+            //makes tail point to the previous node.
+            tail = previous;
+        }
+        //resets the queue
+        else {
+            head = null;
+            tail = null;
+        }
+        
+        count--;
+    }
+}
+Display all
+Description: The name says all. It works the same as the method from stack().
+
+JavaScript
+Copy Code
+this.DisplayAll = function () {
+    //
+    //I will leave the analysis to you.
+    //
+    if (head === null) {
+        return null;
+    }
+    else {
+        var arr = new Array();
+        var current = head;
+
+        for (var i = 0; i < count; i++) {
+            arr[i] = current.data;
+            current = current.next;
+        }
+
+        return arr;
+    }
+}
+Peek At
+A stack image
+
+Description: follows the idea of peek, but any item from the queue can be searched and seen.
+
+JavaScript
+Copy Code
+this.PeekAt = function (index) {
+    //anything smaller than 0 and equal or greater than count is not at the queue
+    if (index > -1 && index < count) {
+        var current = head;
+
+        //Navigates through the queue to find the item
+        for(var i = 0; i < index; i++){
+            current = current.next;
+        }
+
+        return current.data;
+    }
+    //an index out of the bounds of the queue was chosen.
+    else {
+        return null;
+    }
+}
+ENQUEUE(DATA):
+DEQUEUE():
+DISPLAYALL():
+PEEKAT(INDEX):
+3) Linked list
+A list image
+
+Linked lists are data structures that are made of groups of nodes which together represent a sequence. You will notice that both the Queue and the Stack where made using the basic idea of a linked list. However, they have special rule which makes them different in functionality.
+
+JavaScript
+Copy Code
+function LinkedList() {
+    var count = 0;
+    var head = null;
+
+    this.GetCount = function(){
+        return count;
+    }
+
+    // Methods go here
+} 
+Our Linked list will have 6 additional methods: DisplayAll(), DisplayAt(index), AddFirst(data), Add(data, index), RemoveFirst(), RemoveAt.
+
+Display all
+Description: The name says all. Returns an array with the data or if empty it returns null.
+
+JavaScript
+Copy Code
+this.DisplayAll = function () {
+    //if is empty
+    if (head === null) {
+        return null;
+    }
+    else {
+        //if not, runs trough the list and place it in an array.
+        var arr = new Array();
+        var current = head;
+
+        for (var i = 0; i < count; i++) {
+            arr[i] = current.data;
+            current = current.next;
+        }
+
+        return arr;
+    }
+}
+Display At
+Description: Like the previous PeekAt(index) method from Queue display at a specific index or if out of bounds it return null.
+
+JavaScript
+Copy Code
+this.DisplayAt = function (index) {
+    //check for out-of-bounds values
+    if (index > -1 && index < count) {
+        var current = head;
+        var i = 0;
+
+        //this was not me, it is from nczonline(see source).
+        //It is a different way to implelement from the FOR we've been using
+        //and I wanted everyone have the chance to know it.
+        while (i++ < index) {
+            current = current.next;
+        }
+
+        return current.data;
+    }
+    else {
+        return null;
+    }
+}
+Add First
+Description: Adds to the front of the list. If you are wondering, front is where the index is 0 and referenced by head.
+
+JavaScript
+Copy Code
+this.AddFirst = function(data) {
+    //creates a new node
+    var node = {
+        data: data,
+        next: head
+    };
+
+    head = node;
+
+    count++;
+}
+Add
+A list image
+
+Description: Adds an item to the list at the specified position.
+
+JavaScript
+Shrink ▲   Copy Code
+this.Add = function (data, index) {
+    //if the chosen index is 0 do the AddFirst(data) method.
+    if (index === 0) {
+        this.AddFirst(data);
+    }
+    //check for out-of-bounds values
+    else if (index > -1 && index < count) {
+
+        var node = {
+            data: data,
+            next: null
+        };
+
+        var previous;
+        var current = head;
+        var i = 0;
+
+        //find the right location
+        while (i++ < index) {
+            previous = current;
+            current = current.next;
+        }
+
+        previous.next = node;
+        node.next = current;
+
+        count++;
+    }
+    else {
+        alert("out of range");
+    }
+}
+Remove First
+Description: Removes the first item.
+
+JavaScript
+Copy Code
+this.RemoveFirst = function () {
+    //if no items on the list, returns null
+    if (head === null) {
+        return null;
+    }
+    else {
+        var out = head;
+        head = head.next;
+
+        if (count > 0) {
+            count--;
+        }
+
+        return out.data;
+    }
+}
+Remove At
+A list image
+
+Description: Removes an item from a specific index
+
+JavaScript
+Shrink ▲   Copy Code
+this.RemoveAt = function (index) {
+    if (index === 0) {
+        return this.RemoveFirst(index);
+    }
+    //check for out-of-bounds values
+    else if (index > -1 && index < count) {
+
+        var current = head;
+        var previous;
+        var i = 0;
+
+        //find the right location
+        while (i++ < index) {
+            previous = current;
+            current = current.next;
+        }
+
+        //skip over the item to remove
+        previous.next = current.next;
+
+        //decrement the length
+        count--;
+    }
+    else {
+        return null;
+    }
+
+    //return the value
+    return current.data;
+} 
+DISPLAYALL():
+DISPLAYAT(INDEX):
+ADDFIRST(DATA):
+ADD(DATA,INDEX):
+REMOVEFIRST():
+REMOVEAT(INDEX):
+4)Deque (Double-ended queue)
+A stack image
+
+The Double-ended queue is basically like a queue, except that you can add or remove from either side. Now that you are a bit more used to how this works, I would like to make things a bit harder.
+
+JavaScript
+Shrink ▲   Copy Code
+function Deque() {
+	var count = 0;
+	var head = null;
+	var tail = null;
+
+	//Allows to view the value stored on Head
+	this.getHead = function() {
+		if (head) {
+			return head.data;
+		}
+
+		return null;
+	}
+	
+	//Allows to view the value stored on Tail
+	this.getTail = function() {
+		if (tail) {
+			return tail.data;
+		}
+		return null;
+	}
+	
+	//Returns the number of items
+	this.GetCount = function() {
+		return count;
+	}
+	
+	//Lets define the node structure outside of each method.
+	//This way it will need to be done only once
+	var Node = function(data) {
+		this.data = data;
+		this.next = null;
+	}
+	
+	//Methods go here
+}
+The deque will have way more methods than the other, with a total of 10, the ones you've seen and: DisplayHeadToTail(), DisplayTailToHead() AddHead(data), AddTail(data),RemoveHead() and RemoveTail().
+
+Display Head to Tail
+Description: Returns an array with the data or if empty it returns null.
+
+JavaScript
+Copy Code
+this.DisplayHeadToTail = function() {
+		if (head != null) {
+			var arr = new Array();
+			var current = head;
+			
+			//while there is a current
+			while (current) {
+				
+				//ATTENTION: To those new to javascript, have a look. Can you guess what this method does?
+				arr.push(current.data);
+				current = current.next;
+			}
+
+			return arr;
+		} else {
+			return null;
+		}
+}
+Display Tail to Head
+Description: Returns the deque data from end to start (opposite from before).
+
+JavaScript
+Copy Code
+this.DisplayTailToHead = function() {
+		if (head != null) {
+			
+			//call DisplayHeadToTail() and reverse it.
+			var arr = this.DisplayHeadToTail();
+			
+			//This is one of the many great methods from javascript.
+			return arr.reverse();
+		} else {
+			return null;
+		}
+}
+Add Head
+Image 13
+
+Description: Adds to the front(head) of the deque
+
+JavaScript
+Copy Code
+this.AddHead = function(data) {
+		
+		//As you can see, now we only need to declare a new node
+		var node = new Node(data);
+		
+		node.next = head;
+		head = node;
+
+		//if the list was empty
+		if (!tail) {
+			tail = head;
+		}
+
+		count++;
+}
+Add Tail
+Image 14
+
+Description: Adds to the end(tail) of the deque
+
+JavaScript
+Copy Code
+this.AddTail = function(data) {
+		var node = new Node(data);
+		
+		//if the list was empty
+		if (!head) {
+			head = node;
+		} else {
+			tail.next = node;
+		}
+
+		tail = node;
+		count++;
+}
+Remove Head
+Image 15
+
+Description: Removes at the front(head) of the deque
+
+JavaScript
+Copy Code
+this.RemoveHead = function() {
+		if (head) {
+			//If it's the last item
+			if (count === 1) {
+				head = null;
+				tail = null;
+			} else {
+				head = head.next;
+			}
+
+			count--;
+		}
+}
+Remove Tail
+Image 16
+
+Removes at the end(tail) of the deque
+
+JavaScript
+Copy Code
+this.RemoveTail = function() {
+		if (head) {
+			//If it's the last item
+			if (count === 1) {
+				head = null;
+				tail = null;
+			} else {
+				var current = head;
+				
+				//we need to go as far as the 2 before last
+				while (current.next.next) {
+					current = current.next;
+				}
+
+				tail = current;
+				tail.next = null;
+			}
+
+			count--;
+		}
+}
+DisplayHeadToTail():
+DisplayTailToHead():
+AddHead(data):
+AddTail(data):
+RemoveHead():
+RemoveHead():
+5)Doubly linked list
+Image 17
+
+The Doubly linked list works by the same principle as the linked list. However, each node contains a reference to both previous and next node, if such node is available. This is particularly useful when there is a need to travel backwards as well as forward.
+
+JavaScript
+Shrink ▲   Copy Code
+function DoublyLinkedList(){
+    var count = 0;
+    var head = null;
+    var tail = null;
+
+	//Allows to view the value stored on Head
+	this.getHead = function() {
+		if (head) {
+			return head.data;
+		}
+
+		return null;
+	}
+	
+	//Allows to view the value stored on Tail
+	this.getTail = function() {
+		if (tail) {
+			return tail.data;
+		}
+		return null;
+	}
+	
+	//Returns the number of items
+	this.GetCount = function() {
+		return count;
+	}
+	
+	//Defines the node
+	var Node = function(data) {
+		this.data = data;
+		this.next = null;
+		this.previous = null;
+	}
+
+    // Methods go here
+} 
+Our Doubly Linked list will be the final challenge and the longest one with an addtional 9 methods: DisplayAll(), DisplayAllBackwards() DisplayAt(index), AddFirst(data),AddLast(data), Add(data, index), RemoveFirst(), RemoveFirst(), RemoveAt.
+
+Display All
+Description: Returns an array with the data or if empty it returns null.
+
+JavaScript
+Copy Code
+this.DisplayAll = function () {
+        //Most of the time, head won't be null, so lets start by that this time
+    if (head) {
+        var arr = new Array();
+        var current = head;
+        for (var i = 0; i < count; i++) {
+            arr[i] = current.data;
+            current = current.next;
+        }
+        return arr;
+    }
+    else {
+        return null;
+    }
+}
+Display All Backwards
+DescriptionReturns an array with the data from tail to head or if empty it returns null.
+
+Take a close look at this method and think how hard would be to implement it in a normal linked list
+
+JavaScript
+Copy Code
+this.DisplayAllBackwards = function(){
+    if (head) {
+        var arr = new Array();
+        var current = tail;
+        for (var i = 0; i < count; i++) {
+            arr[i] = current.data;
+            current = current.previous;
+        }
+        return arr;
+    }
+    else {
+        return null;
+    }
+}
+Display At
+Image 18
+
+Description: Works the same way as with linked list.
+
+JavaScript
+Copy Code
+this.DisplayAt = function (index) {
+    //check for out-of-bounds values
+    if (index > -1 && index < count) {
+        var current = head;
+        var i = 0;
+
+        //this was not me, it is from nczonline(see source).
+        //It is a different way to implelement from the FOR we've been using
+        //and I wanted everyone have the chance to know it.
+        while (i++ < index) {
+            current = current.next;
+        }
+
+        return current.data;
+    }
+    else {
+        return null;
+    }
+}
+Add First
+Description: Adds to the front of the doubly linked list.
+
+JavaScript
+Copy Code
+this.AddFirst = function (data) {
+    //creates a new node
+    var node = new Node(data);
+    node.next = head;
+
+    head = node;
+
+    //if the list was empty
+    if (count === 0) {
+        tail = head;
+    }
+    else {
+        //Don't forget about the previous node. It also needs to be referenced.
+        head.next.previous = head;
+    }
+
+    count++;
+}
+Add Last
+Description: Adds to the end of the doubly linked list.
+
+JavaScript
+Copy Code
+this.AddLast = function (data) {
+    var node = new Node(data);
+    node.previous = tail;
+
+    if (count === 0) {
+        head = node;
+    }
+    else {
+        tail.next = node;
+    }
+
+    tail = node;
+
+    count++;
+}
+Add
+Image 19
+
+Description: Adds an item at the specified position. Tip: Draw the process if necessary, it is not as simple as you might think.
+
+JavaScript
+Shrink ▲   Copy Code
+this.Add = function (data, index) {
+    //check for out-of-bounds values
+    if (index > 0 && index < count) {
+
+        var node = new Node(data);
+        var current = head;
+        var i = 0;
+
+        //find the right location
+        while (i++ < index) {
+            current = current.next;
+        }
+
+        current.previous.next = node;
+        node.next = current;
+        node.previous = current.previous;
+        current.previous = node;
+
+        count++;
+    }
+    else if (index < 1) {
+        this.AddFirst(data);
+    }
+    else {
+        this.AddLast(data);
+    }
+}
+Remove First
+Description: Removes the first item.
+
+JavaScript
+Copy Code
+this.RemoveFirst = function () {
+    if (head) {
+
+        head = head.next;
+        count--;
+        //there was only one item
+        if (count === 0) {
+            tail = null;
+
+        }
+        else {
+            //Don't forget about the previous node. It also needs the reference set to null.
+            head.previous = null;
+
+        }
+    }
+}
+Remove Last
+Description: Removes the last item.
+
+JavaScript
+Copy Code
+this.RemoveLast = function () {
+    if (head) {
+        //there is only one item
+        if (count === 1) {
+            head = null;
+            tail = null;
+        }
+        else {
+            tail.previous.next = null;
+            tail = tail.previous;
+        }
+
+        count--;
+    }
+}
+Remove At
+Image 20
+
+Description: Removes an item from a specific index
+
+JavaScript
+Copy Code
+this.RemoveAt = function (index) {
+    //check for out-of-bounds values
+    if (index > 0 && index < count-1) {
+
+        var current = head;
+        var i = 0;
+
+        //find the right location
+        while (i++ < index) {
+            current = current.next;
+        }
+
+        current.previous.next = current.next;
+        current.next.previous = current.previous;
+
+        count--;
+    }
+    else if (index < 1) {
+        this.RemoveFirst();
+    }
+    else {
+        this.RemoveLast();
+    }
+}
+DISPLAYALL():
+DISPLAYALLBACKWARDS():
+DISPLAYAT(INDEX):
+ADDFIRST(DATA):
+ADDLAST(DATA):
+ADD(DATA,INDEX):
+REMOVEFIRST():
+REMOVELAST():
+REMOVEAT(INDEX):
